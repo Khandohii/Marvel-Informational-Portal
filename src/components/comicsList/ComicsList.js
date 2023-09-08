@@ -63,7 +63,6 @@ const ComicsList = () => {
         )
     }
     
-        // console.log(comicsList);
     const items = renderItems(comicsList);
 
     const errorMessage = error ? <ErrorMessage/> : null;

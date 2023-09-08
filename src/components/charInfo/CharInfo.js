@@ -1,6 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
@@ -55,8 +56,7 @@ const CharInfo = (props) => {
 }
 
 const View = ({char}) => {
-    const {name, description, thumbnail, homepage, wiki, comics} = char;
-    const comicsMaxLength = 10;
+    const {name, description, thumbnail, homepage, wiki, comics, id} = char;
 
     const styleForNotFound = thumbnail.indexOf('image_not_available') !== -1 ? {objectFit: 'contain'} : null;
     
@@ -80,20 +80,59 @@ const View = ({char}) => {
             <div className="char__comics">Comics:</div>
             <ul className="char__comics-list">
                 {comics.length > 0 ? null : 'There is no comics with this character'}
-                {
-                    comics.map((item, i) => {
-                        if (comicsMaxLength <= i) return false;
-
-                        return(
-                            <li key={i} className="char__comics-item">
-                                {item.name}
-                            </li>
-                        )
-                    })
+                {   
+                    <ComicsListByChar charId={id}/>
                 }
             </ul>
         </>
     );
+}
+
+const ComicsListByChar = ({charId}) => {
+    const comicsMaxLength = 10;
+    const [comicsList, setComicsList] = useState([]);
+
+    const {loading, error, getComicsByCharId} = useMarvelService();
+
+    useEffect(() => {
+        onRequest(charId);
+    }, []);
+
+    const onRequest = (charId) => {
+        getComicsByCharId(charId)
+            .then(onComicsListLoaded)
+    }
+
+    const onComicsListLoaded = (comicsList) => {
+        setComicsList([...comicsList]);
+    }
+
+    function renderItems(items) {
+        const comics = items.map((item, i) => {
+            if (comicsMaxLength <= i) return false;
+    
+            return(
+                <li key={i} className="char__comics-item">
+                    <Link to={`/comics/${item.id}`}>{item.title}</Link>
+                </li>
+            )
+        })
+
+        return comics;
+    }
+
+    const items = renderItems(comicsList);
+
+    const errorMessage = error ? <ErrorMessage/> : null;
+    const spinner = loading ? <Spinner/> : null;
+
+    return (
+        <>
+            {errorMessage}
+            {spinner}
+            {items}
+        </>
+    )
 }
 
 CharInfo.propTypes = {
