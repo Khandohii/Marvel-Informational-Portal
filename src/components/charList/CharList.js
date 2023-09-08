@@ -28,11 +28,7 @@ const CharList = (props) => {
             .then(onCharListLoaded)
     }
 
-    const onCharListLoaded = async (newCharList) => {
-
-        const {logger, secondLog} = await import('./someFunc');
-        logger();
-        secondLog();
+    const onCharListLoaded = (newCharList) => {
 
         let ended = false;
 
@@ -100,12 +96,6 @@ const CharList = (props) => {
 
     const errorMessage = error ? <ErrorMessage/> : null;
     const spinner = loading && !newItemLoading ? <Spinner/> : null;
-
-    if (loading) {
-        import('./someFunc')
-            .then(obj => obj.logger())
-            .catch()
-    }
 
     return (
         <div className="char__list">
