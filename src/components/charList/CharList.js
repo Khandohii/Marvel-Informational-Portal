@@ -28,7 +28,12 @@ const CharList = (props) => {
             .then(onCharListLoaded)
     }
 
-    const onCharListLoaded = (newCharList) => {
+    const onCharListLoaded = async (newCharList) => {
+
+        const {logger, secondLog} = await import('./someFunc');
+        logger();
+        secondLog();
+
         let ended = false;
 
         if (newCharList.length < 9) {
@@ -63,7 +68,7 @@ const CharList = (props) => {
                     tabIndex={0}
                     className="char__item" 
                     ref={el => itemRefs.current[i] = el}
-                    key={item.id}
+                    key={i}
                     
                     onClick={() => {
                         props.onCharSelected(item.id);
@@ -95,6 +100,12 @@ const CharList = (props) => {
 
     const errorMessage = error ? <ErrorMessage/> : null;
     const spinner = loading && !newItemLoading ? <Spinner/> : null;
+
+    if (loading) {
+        import('./someFunc')
+            .then(obj => obj.logger())
+            .catch()
+    }
 
     return (
         <div className="char__list">
