@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 import useMarvelService from '../../services/MarvelService';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import './charList.scss';
 
 const CharList = (props) => {
@@ -52,6 +53,7 @@ const CharList = (props) => {
 
 
     function renderItems(arr) {
+
         const items = arr.map((item, i) => {
             let imgStyle = {'objectFit': 'cover'};
 
@@ -60,33 +62,37 @@ const CharList = (props) => {
             }
 
             return(
-                <li 
-                    tabIndex={0}
-                    className="char__item" 
-                    ref={el => itemRefs.current[i] = el}
-                    key={i}
-                    
-                    onClick={() => {
-                        props.onCharSelected(item.id);
-                        focusOnItem(i);
-                    }}
-                    
-                    onKeyPress={(e) => {
-                        if (e.key === ' ' || e.key === "Enter") {
+                <CSSTransition key={i} timeout={500} classNames="char__item">
+                    <li
+                        tabIndex={0}
+                        className="char__item"
+                        ref={el => itemRefs.current[i] = el}
+                        key={i}
+
+                        onClick={() => {
                             props.onCharSelected(item.id);
                             focusOnItem(i);
-                        }
-                    }}
-                >
-                    <img src={item.thumbnail} alt={item.name} style={imgStyle}/>
-                    <div className="char__name">{item.name}</div>
-                </li>
+                        }}
+
+                        onKeyPress={(e) => {
+                            if (e.key === ' ' || e.key === "Enter") {
+                                props.onCharSelected(item.id);
+                                focusOnItem(i);
+                            }
+                        }}
+                    >
+                        <img src={item.thumbnail} alt={item.name} style={imgStyle} />
+                        <div className="char__name">{item.name}</div>
+                    </li>
+                </CSSTransition>
             )
         });
 
         return(
             <ul className="char__grid">
-                {items}
+                <TransitionGroup component={null}>
+                    {items}
+                </TransitionGroup>
             </ul>
         )
     }
@@ -99,11 +105,9 @@ const CharList = (props) => {
 
     return (
         <div className="char__list">
-            <ul className="char__grid">
-                {errorMessage}
-                {spinner}
-                {items}
-            </ul>
+            {errorMessage}
+            {spinner}
+            {items}
             <button 
                 className="button button__main button__long"
                 disabled={newItemLoading}
