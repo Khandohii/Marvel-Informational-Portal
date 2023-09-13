@@ -1,0 +1,33 @@
+@import '../../style/variables.scss';
+
+.single__char{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 50px;
+
+    &__thumbnail{
+        width: 293px;
+
+        img{
+            display: block;
+            width: 100%;
+        }
+    }
+
+    &__data{
+        width: calc(100% - 343px);
+    }
+
+    &__name{
+        color: #000;
+        font-size: 22px;
+        font-weight: 700;
+        margin-bottom: 25px;
+    }
+
+    &__desc{
+        color: #000;
+        font-size: 18px;
+        font-weight: 400;
+    }
+}
