@@ -1,4 +1,5 @@
 
+import { Helmet } from 'react-helmet';
 import './singleCharacterLayout.scss';
 
 const SingleCharacterLayout = ({data}) => {
@@ -7,6 +8,10 @@ const SingleCharacterLayout = ({data}) => {
     
     return(
         <div className='single__char'>
+            <Helmet>
+                <meta name="description" content={name} />
+                <title>{name}</title>
+            </Helmet>
             <div className="single__char__thumbnail">
                 <img src={thumbnail} alt={name} />
             </div>
