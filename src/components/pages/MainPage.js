@@ -3,7 +3,7 @@ import { useState } from "react";
 import RandomChar from "../randomChar/RandomChar";
 import CharList from "../charList/CharList";
 import CharInfo from "../charInfo/CharInfo";
-import CharSearch from "../charSearch/CharSearch";
+import CharSearchForm from "../charSearch/CharSearchForm";
 import ErrorBoundary from "../errorBoundary/ErrorBoundary";
 
 import decoration from '../../resources/img/vision.png';
@@ -32,7 +32,7 @@ const MainPage = () => {
                     </ErrorBoundary>
 
                     <ErrorBoundary>
-                        <CharSearch/>
+                        <CharSearchForm/>
                     </ErrorBoundary>
                 </div>
             </div>
