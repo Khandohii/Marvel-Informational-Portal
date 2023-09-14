@@ -18,6 +18,7 @@ const CharInfo = (props) => {
     
     useEffect(() => {
         updateChar();
+        // eslint-disable-next-line
     }, [props.charId]);
 
     const updateChar = () => {
@@ -87,6 +88,7 @@ const ComicsListByChar = ({charId}) => {
 
     useEffect(() => {
         onRequest(charId);
+        // eslint-disable-next-line
     }, []);
 
     const onRequest = (charId) => {
