@@ -5,17 +5,16 @@ import { Link } from 'react-router-dom';
 
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
-import Skeleton from '../skeleton/Skeleton';
 
 import './charInfo.scss';
-
+import setContent from '../../utils/setContent';
 import useMarvelService from '../../services/MarvelService';
 
 const CharInfo = (props) => {
 
     const [char, setChar] = useState(null);
     
-    const {loading, error, getCharachter, clearError} = useMarvelService();
+    const {getCharachter, clearError, process, setProcess} = useMarvelService();
     
     useEffect(() => {
         updateChar();
@@ -32,31 +31,23 @@ const CharInfo = (props) => {
 
         getCharachter(charId)
             .then(onCharLoaded)
+            .then(() => setProcess('confirmed'))
     }
 
     const onCharLoaded = (char) => {
         setChar(char);
     }
 
-    const skeleton = char || loading || error ? null : <Skeleton />;
-
-    const errorMessage = error ? <ErrorMessage/> : null;
-    const spinner = loading ? <Spinner/> : null;
-    const content = !(loading || error || !char) ? <View char={char}/> : null;
-
     
     return (
         <div className="char__info">
-            {skeleton}
-            {errorMessage}
-            {spinner}
-            {content}
+            {setContent(process, View, char)}
         </div>
     )
 }
 
-const View = ({char}) => {
-    const {name, description, thumbnail, homepage, wiki, comics, id} = char;
+const View = ({data}) => {
+    const {name, description, thumbnail, homepage, wiki, comics, id} = data;
 
     const styleForNotFound = thumbnail.indexOf('image_not_available') !== -1 ? {objectFit: 'contain'} : null;
     

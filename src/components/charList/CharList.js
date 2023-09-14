@@ -8,6 +8,26 @@ import useMarvelService from '../../services/MarvelService';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import './charList.scss';
 
+
+const setContent = (process, Component, newItemLoading) => {
+    switch (process) {
+        case 'waiting':
+            return <Spinner/>;
+
+        case 'loading':
+            return newItemLoading ? <Component/> : <Spinner/>;
+        
+        case 'confirmed':
+            return <Component/>;
+        
+        case 'error':
+            return <ErrorMessage/>;
+
+        default:
+            throw new Error('Unexpected process state');
+    }
+}
+
 const CharList = (props) => {
 
     const [charList, setCharList] = useState([]);
@@ -16,7 +36,7 @@ const CharList = (props) => {
     const [offset, setOffset] = useState(210);
     const [charEnded, setCharEnded] = useState(false);
 
-    const {loading, error, getAllCharachters} = useMarvelService();
+    const {getAllCharachters, process, setProcess} = useMarvelService();
 
     useEffect(() => {
         onRequest(offset, true);
@@ -27,6 +47,7 @@ const CharList = (props) => {
 
         getAllCharachters(offset)
             .then(onCharListLoaded)
+            .then(() => setProcess('confirmed'))
     }
 
     const onCharListLoaded = (newCharList) => {
@@ -98,16 +119,9 @@ const CharList = (props) => {
     }
     
 
-    const items = renderItems(charList)
-
-    const errorMessage = error ? <ErrorMessage/> : null;
-    const spinner = loading && !newItemLoading ? <Spinner/> : null;
-
     return (
         <div className="char__list">
-            {errorMessage}
-            {spinner}
-            {items}
+            {setContent(process, () => renderItems(charList), newItemLoading)}
             <button 
                 className="button button__main button__long"
                 disabled={newItemLoading}

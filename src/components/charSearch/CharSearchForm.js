@@ -60,7 +60,7 @@ const CharSearchForm = () => {
                     <div className="char__search-wrapper">
                         <Field name="charName" id="charName" type="text" className='input' placeholder='Enter name' />
 
-                        <button type='submit' class="button button__main" disabled={loading} ><div class="inner">FIND</div></button>
+                        <button type='submit' className="button button__main" disabled={loading} ><div className="inner">FIND</div></button>
                     </div>
 
                     
