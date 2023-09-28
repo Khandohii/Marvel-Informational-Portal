@@ -4,6 +4,8 @@ It's the React application using the Marvel API.
 
 On the application we get datas from Marvel API.
 
+:book: On the application user can see random Marvel charachter and choose another randome charachter. There is a list of charachters and user can load more charachters or to see a detail information about the cahrachter by clic on it. On the detailed information there is a list of comics with this charachter and it's possible to click the comics and open the page with it. Also it's possible to find a charachter by the name on the form.
+
 :film_strip: Demo - [Marvel-Informational-Portal](https://khandohii.github.io/Marvel-Informational-Portal/)
 
 ## :computer: In this app is using such technologies as:
